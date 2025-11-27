@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// جدول المديرين (Admins)
+model Admin {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  password      String        // bcrypt hashed
+  name          String
+  role          String        @default("ADMIN") // SUPER_ADMIN, ADMIN, EDITOR
+  permissions   String?       // JSON string للصلاحيات المخصصة
+  isActive      Boolean       @default(true)
+  lastLogin     DateTime?
+  loginAttempts Int           @default(0)
+  lockedUntil   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  activities    ActivityLog[]
+}
+
+// سجل النشاطات (Activity Log)
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String   // نوع النشاط (إضافة منتج، تحديث طلب، إلخ)
+  details   String?  // تفاصيل إضافية
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+// جدول التصنيفات (Categories)
+model Category {
+  id          String    @id @default(cuid())
+  name        String    // اسم التصنيف بالعربية
+  slug        String    @unique // للاستخدام في الروابط
+  description String?   // وصف التصنيف
+  products    Product[] // المنتجات في هذا التصنيف
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// جدول المنتجات (Products)
+model Product {
+  id          String      @id @default(cuid())
+  name        String      // اسم المنتج بالعربية
+  slug        String      @unique // للاستخدام في الروابط
+  description String      // وصف المنتج
+  price       Decimal     @default(0) // السعر
+  image       String      // رابط الصورة
+  images      String?     // صور إضافية (JSON array)
+  stock       Int         @default(0) // الكمية المتوفرة
+  featured    Boolean     @default(false) // منتج مميز
+  categoryId  String      // معرف التصنيف
+  category    Category    @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[] // عناصر الطلبات
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+// جدول الطلبات (Orders)
+model Order {
+  id            String      @id @default(cuid())
+  customerName  String      // اسم العميل
+  customerEmail String      // البريد الإلكتروني
+  customerPhone String      // رقم الهاتف
+  address       String      // العنوان
+  city          String      // المدينة
+  totalAmount   Decimal     @default(0) // المبلغ الإجمالي
+  status        String      @default("pending") // حالة الطلب: pending, confirmed, shipped, delivered, cancelled
+  orderItems    OrderItem[] // عناصر الطلب
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+// جدول عناصر الطلب (Order Items)
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String   // معرف الطلب
+  productId String   // معرف المنتج
+  quantity  Int      // الكمية
+  price     Decimal  // السعر وقت الطلب
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+}
