@@ -1,13 +1,12 @@
 {
   "name": "hoor-stylish",
   "version": "1.0.0",
-  "homepage": "https://hany-hassan.github.io/hoor-stylish/",
   "description": "متجر إلكتروني للأزياء الإسلامية - Hoor Stylish Islamic Fashion E-commerce",
   "author": "Your Name",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
@@ -15,22 +14,20 @@
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
-    "deploy": "gh-pages -d out",
-    "predeploy": "npm run build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "gh-pages": "^6.3.0",
     "lucide-react": "^0.555.0",
     "next": "16.0.4",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "@prisma/client": "^5.22.0"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",

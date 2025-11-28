@@ -1,187 +1,137 @@
-# Hoor Stylish - متجر الأزياء الإسلامية
+# 👗 Hoor Stylish - متجر الأزياء الإسلامية
 
-متجر إلكتروني عصري للأزياء الإسلامية مبني بـ Next.js 16 و Prisma.
+متجر إلكتروني حديث ومتكامل للأزياء الإسلامية، مبني بأحدث التقنيات.
 
 ## ✨ المميزات
 
-- 🛍️ واجهة عصرية وسريعة
-- 🔐 نظام صلاحيات متقدم (Super Admin, Admin, Editor)  
-- 🛡️ حماية قوية مع Rate Limiting وAccount Locking
-- 📊 لوحة تحكم احترافية
-- 🌐 دعم كامل للغة العربية (RTL)
-- 📱 تصميم متجاوب (Responsive)
+- 🛍️ واجهة مستخدم عصرية وسهلة الاستخدام
+- 📱 تصميم متجاوب (Responsive) لجميع الأجهزة
+- 🔐 نظام إدارة متقدم مع صلاحيات متعددة
+- 📊 لوحة تحكم شاملة
+- 🛒 نظام طلبات متكامل
+- 📦 إدارة المنتجات والتصنيفات
+- 🎨 تصميم أنيق باللغة العربية
 
 ## 🚀 التقنيات المستخدمة
 
-- **Frontend**: Next.js 16 (App Router), React 19, TailwindCSS
-- **Backend**: Next.js API Routes
-- **Database**: SQLite (Development), PostgreSQL (Production)
+- **Frontend**: Next.js 16 + React 19
+- **Styling**: Tailwind CSS
+- **Database**: PostgreSQL (Vercel Postgres)
 - **ORM**: Prisma
-- **Authentication**: Custom JWT-less session system
-- **Security**: bcryptjs, Rate Limiting, Permission-based access
+- **Authentication**: bcryptjs
+- **Icons**: Lucide React
+- **Deployment**: Vercel
 
 ## 📦 التثبيت المحلي
 
-### المتطلبات
-
-- Node.js 18+ 
+### المتطلبات:
+- Node.js 18 أو أحدث
 - npm أو yarn
 
-### خطوات التثبيت
+### الخطوات:
 
 ```bash
 # 1. استنساخ المشروع
-git clone https://github.com/hany-php/hoor-stylish.git
+git clone https://github.com/YOUR_USERNAME/hoor-stylish.git
 cd hoor-stylish
 
 # 2. تثبيت المكتبات
 npm install
 
-# 3. إعداد قاعدة البيانات
-cp .env.example .env
+# 3. إعداد البيئة
+# انسخ ملف .env.example إلى .env
+# ثم أضف DATABASE_URL الخاص بك
+
+# 4. تشغيل Migrations
 npx prisma generate
 npx prisma migrate dev
 
-# 4. إضافة بيانات تجريبية
+# 5. إضافة بيانات تجريبية (اختياري)
 npm run db:seed
 
-# 5. تشغيل المشروع
+# 6. تشغيل المشروع
 npm run dev
 ```
 
-المشروع سيعمل على: http://localhost:3000
+الموقع سيعمل على: http://localhost:3000
 
-## 🔑 بيانات تسجيل الدخول الافتراضية
+## 🌐 النشر على Vercel
 
-- **Email**: `admin@hoorstylish.com`
-- **Password**: `Admin@123`
-- **Role**: Super Admin
+اتبع الخطوات المفصلة في ملف [DEPLOY.md](./DEPLOY.md)
 
-⚠️ **مهم**: قم بتغيير كلمة المرور في بيئة الإنتاج!
+### الخطوات السريعة:
+1. ارفع المشروع على GitHub
+2. سجل في [Vercel](https://vercel.com)
+3. اربط مستودع GitHub
+4. أنشئ قاعدة بيانات Postgres من Vercel
+5. اضغط Deploy ✨
 
-## 🌐 Deployment على Vercel
-
-### الخطوة 1: تجهيز المشروع
-
-```bash
-# تأكد من أن جميع التغييرات محفوظة
-git add .
-git commit -m "Ready for deployment"
-git push origin main
-```
-
-### الخطوة 2: إنشاء حساب Vercel
-
-1. اذهب إلى [vercel.com](https://vercel.com)
-2. سجل دخول بـ GitHub
-3. اضغط "Import Project"
-4. اختر `hoor-stylish` repository
-
-### الخطوة 3: إعداد Environment Variables
-
-في لوحة تحكم Vercel، أضف المتغيرات التالية:
-
-```
-DATABASE_URL="postgresql://user:password@host:5432/database"
-NODE_ENV="production"
-```
-
-### الخطوة 4: Deploy!
-
-Vercel سيقوم بـ:
-- ✅ تثبيت المكتبات تلقائياً
-- ✅ Build المشروع
-- ✅ Deploy تلقائياً
-
-## 📁 هيكل المشروع
+## 📂 هيكل المشروع
 
 ```
 hoor-stylish/
-├── app/                    # Next.js App Router
+├── app/                    # صفحات Next.js
 │   ├── admin/             # لوحة التحكم
 │   ├── api/               # API Routes
 │   ├── products/          # صفحات المنتجات
 │   └── ...
-├── lib/                   # Utilities & Helpers
-│   ├── auth.ts           # Authentication logic
-│   ├── permissions.ts    # Permission system
-│   ├── rate-limit.ts     # Rate limiting
-│   └── prisma.ts         # Prisma client
-├── prisma/               # Database
-│   ├── schema.prisma     # Database schema
-│   └── seed.ts           # Seed data
-└── public/               # Static files
+├── components/            # مكونات React القابلة لإعادة الاستخدام
+├── lib/                   # مكتبات مساعدة
+├── prisma/               # قاعدة البيانات
+│   ├── schema.prisma     # مخطط قاعدة البيانات
+│   └── seed.ts           # بيانات أولية
+├── public/               # ملفات ثابتة
+└── ...
 ```
 
-## 🔒 نظام الصلاحيات
+## 🔐 بيانات الدخول الافتراضية
 
-### الأدوار
+بعد تشغيل `npm run db:seed`:
 
-| الدور | الصلاحيات |
-|------|-----------|
-| **Super Admin** | صلاحيات كاملة، إدارة المديرين |
-| **Admin** | إدارة المنتجات والطلبات والتقارير |
-| **Editor** | عرض وتعديل المنتجات فقط |
+- **البريد**: admin@hoor-stylish.com
+- **كلمة المرور**: Admin@123
 
-### الصلاحيات المتاحة
+⚠️ **مهم**: غيّر بيانات الدخول بعد أول استخدام!
 
-- `MANAGE_ADMINS` - إدارة المديرين
-- `CREATE_PRODUCT` - إضافة منتجات
-- `EDIT_PRODUCT` - تعديل منتجات
-- `DELETE_PRODUCT` - حذف منتجات
-- `CREATE_CATEGORY` - إضافة تصنيفات
-- `UPDATE_ORDER_STATUS` - تحديث حالة الطلبات
-- وغيرها...
-
-## 🛡️ الأمان
-
-- ✅ **Rate Limiting**: 5 محاولات / 15 دقيقة
-- ✅ **Account Locking**: قفل تلقائي بعد 5 محاولات فاشلة
-- ✅ **Password Hashing**: bcryptjs
-- ✅ **Session Management**: Secure HTTP-only cookies
-- ✅ **Permission-based Access Control**: RBAC system
-
-## 📝 Scripts المتاحة
+## 🛠️ الأوامر المتاحة
 
 ```bash
-npm run dev          # تشغيل Development server
-npm run build        # Build للإنتاج
-npm start            # تشغيل Production server
-npm run db:migrate   # تشغيل Database migrations
+npm run dev          # تشغيل بيئة التطوير
+npm run build        # بناء المشروع للإنتاج
+npm run start        # تشغيل النسخة المبنية
+npm run lint         # فحص الأكواد
+
+# أوامر قاعدة البيانات
+npm run db:generate  # توليد Prisma Client
+npm run db:migrate   # تطبيق Migrations
 npm run db:seed      # إضافة بيانات تجريبية
 npm run db:studio    # فتح Prisma Studio
 ```
 
-## 🐛 Troubleshooting
+## 📱 لقطات شاشة
 
-### المشروع لا يعمل بعد التثبيت؟
+[سيتم إضافة لقطات الشاشة هنا]
 
-```bash
-# حذف node_modules وإعادة التثبيت
-rm -rf node_modules package-lock.json
-npm install
+## 🤝 المساهمة
 
-# إعادة generate Prisma Client
-npx prisma generate
-```
+المشروع مفتوح للمساهمات! إذا كان لديك اقتراح أو وجدت مشكلة:
 
-### مشكلة في قاعدة البيانات؟
+1. Fork المستودع
+2. أنشئ فرع جديد (`git checkout -b feature/amazing-feature`)
+3. Commit التغييرات (`git commit -m 'Add amazing feature'`)
+4. Push للفرع (`git push origin feature/amazing-feature`)
+5. افتح Pull Request
 
-```bash
-# إعادة تعيين قاعدة البيانات
-rm prisma/dev.db
-npx prisma migrate dev
-npm run db:seed
-```
+## 📄 الترخيص
 
-## 📄 License
+هذا المشروع مرخص تحت [MIT License](LICENSE)
 
-MIT License - يمكنك استخدام المشروع بحرية
+## 📞 الدعم
 
-## 👨‍💻 المطور
-
-تم التطوير بواسطة فريق Hoor Stylish
+إذا واجهت أي مشكلة:
+- افتح [Issue](https://github.com/YOUR_USERNAME/hoor-stylish/issues)
+- راسلنا على: support@hoor-stylish.com
 
 ---
 
-Made with ❤️ for the Islamic Fashion Community
+صنع بـ ❤️ للأزياء الإسلامية العصرية
